@@ -11,7 +11,6 @@ import com.wora.citronix.farm.domain.entity.Farm;
 import com.wora.citronix.farm.domain.repository.FarmRepository;
 import com.wora.citronix.farm.domain.vo.FarmId;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.service.GenericResponseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -21,7 +20,6 @@ public class DefaultFarmService implements FarmService {
     private final FarmRepository repository;
     private final FieldService fieldService;
     private final FarmMapper mapper;
-    private final GenericResponseService responseBuilder;
 
     @Override
     public Page<FarmResponseDto> findAll(int pageNum, int pageSize) {
@@ -33,7 +31,7 @@ public class DefaultFarmService implements FarmService {
     public FarmResponseDto findById(FarmId id) {
         return repository.findById(id)
                 .map(mapper::toResponseDto)
-                .orElseThrow(() -> new EntityNotFoundException("field", id.value()));
+                .orElseThrow(() -> new EntityNotFoundException("farm", id.value()));
     }
 
     @Override
