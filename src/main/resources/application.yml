@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: citronix
+  datasource:
+    url: jdbc:postgresql://localhost:5433/prod_db
+    username: pguser
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+
+app:
+  open-api:
+    server:
+      url: http://localhost:8080
+      description: API for Citronix farm management system.
+    info:
+      title: Citronix Farm Management API
+      version: 1.0.0
+      description: |
+        This API supports the following features:
+        - **Farm Management**: Manage farms with name, location, area, and creation date. Supports multi-criteria search.
+        - **Field Management**: Manage fields associated with farms, ensuring field areas are consistent.
+        - **Tree Management**: Manage trees, calculate age and productivity by age group.
+        - **Harvest Management**: Track seasonal harvests with single harvests per season.
+        - **Harvest Details**: Track harvested quantities per tree for a specific harvest.
+        - **Sales Management**: Manage sales with associated harvests, prices, and customers.
+      contact:
+        name: Aymane El Maini
+        email: elmainiaymane03@gmail.com
+        url: https://aymaneelmaini.vercel.app
