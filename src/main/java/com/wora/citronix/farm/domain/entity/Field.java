@@ -26,4 +26,5 @@ public class Field {
 
     @ManyToOne
     private Farm farm;
+
 }

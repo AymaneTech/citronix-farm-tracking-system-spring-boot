@@ -82,9 +82,9 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 LocalDateTime.now(),
-                ex.getMessage(),
+                "error creating entity",
                 request.getDescription(false),
-                String.join("\n", ex.errors())
+                ex.getMessage()
         );
     }
 

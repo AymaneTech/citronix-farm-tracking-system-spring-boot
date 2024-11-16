@@ -1,19 +1,16 @@
 package com.wora.citronix.farm.infrastructure.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wora.citronix.Application;
 import com.wora.citronix.farm.application.dto.request.FarmRequestDto;
 import com.wora.citronix.farm.application.dto.response.FarmResponseDto;
 import com.wora.citronix.farm.application.service.FarmService;
+import com.wora.citronix.farm.config.IntegrationTest;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.wora.citronix.common.infrastructure.web.GlobalExceptionHandler.ENTITY_NOT_FOUND_MESSAGE;
@@ -23,9 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@ActiveProfiles("test")
-@AutoConfigureMockMvc
+@IntegrationTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class FarmControllerIntegrationTest {
     private final MockMvc mockMvc;
@@ -33,8 +28,6 @@ class FarmControllerIntegrationTest {
     private final FarmService farmService;
 
     private FarmResponseDto farm;
-    @Autowired
-    private Application application;
 
     @BeforeEach
     void setup() {

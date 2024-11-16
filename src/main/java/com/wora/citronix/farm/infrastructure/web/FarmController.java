@@ -3,7 +3,6 @@ package com.wora.citronix.farm.infrastructure.web;
 import com.wora.citronix.farm.application.dto.request.FarmRequestDto;
 import com.wora.citronix.farm.application.dto.response.FarmResponseDto;
 import com.wora.citronix.farm.application.service.FarmService;
-import com.wora.citronix.farm.application.service.impl.DefaultFarmService;
 import com.wora.citronix.farm.domain.vo.FarmId;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FarmController {
     private final FarmService service;
-    private final DefaultFarmService defaultFarmService;
 
     @GetMapping
     public ResponseEntity<Page<FarmResponseDto>> findAll(
