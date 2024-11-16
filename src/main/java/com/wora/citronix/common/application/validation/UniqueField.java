@@ -1,6 +1,6 @@
 package com.wora.citronix.common.application.validation;
 
-import com.wora.waitingroom.common.application.validation.validator.UniqueFieldValidator;
+import com.wora.citronix.common.application.validation.validator.UniqueFieldValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
