@@ -1,7 +1,7 @@
 package com.wora.citronix.common.domain.exception;
 
-public class AlreadyExists extends RuntimeException {
-    public AlreadyExists(String message) {
+public class AlreadyExistsException extends RuntimeException {
+    public AlreadyExistsException(String message) {
         super(message);
     }
 }

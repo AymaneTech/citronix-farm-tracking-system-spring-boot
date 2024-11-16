@@ -1,7 +1,7 @@
 package com.wora.citronix.farm.application.service.impl;
 
 import com.wora.citronix.common.application.service.ApplicationService;
-import com.wora.citronix.common.domain.exception.AlreadyExists;
+import com.wora.citronix.common.domain.exception.AlreadyExistsException;
 import com.wora.citronix.common.domain.exception.EntityNotFoundException;
 import com.wora.citronix.farm.application.dto.request.FieldRequestDto;
 import com.wora.citronix.farm.application.dto.response.FieldResponseDto;
@@ -51,7 +51,7 @@ public class DefaultFieldService implements FieldService {
                 .ensureFieldAreaWithinFarmCapacity(dto.area());
 
         if (repository.existsByName(dto.name()))
-            throw new AlreadyExists("Field Name Already Taken in Farm: " + farm.getName());
+            throw new AlreadyExistsException("Field Name Already Taken in Farm: " + farm.getName());
 
         Field field = mapper.toEntity(dto)
                 .setFarm(farm);
