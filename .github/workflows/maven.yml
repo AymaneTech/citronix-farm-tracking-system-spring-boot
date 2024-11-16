@@ -1,0 +1,78 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - "main"
+      - "dev"
+      - "feature/*"
+    paths:
+      - 'src/**'
+      - '.github/workflows/maven.yml'
+      - 'docker-compose.yml'
+      - 'Dockerfile'
+  pull_request:
+    branches:
+      - "main"
+      - "dev"
+    paths:
+      - 'src/**'
+      - '.github/workflows/maven.yml'
+      - 'docker-compose.yml'
+      - 'Dockerfile'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Setup maven dependencies caching
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Run mvn install
+        run: mvn install -DskipTests
+
+      - name: Build docker image
+        run: docker build -t waiting-room-management-api:latest .
+
+      - name: Run docker compose
+        run: docker compose up --build -d
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/test_db
+          SPRING_DATASOURCE_USERNAME: pguser
+          SPRING_DATASOURCE_PASSWORD: password
+
+      - name: Wait for database to be ready
+        run: |
+          timeout 30s bash -c 'until pg_isready -h localhost -p 5433; do sleep 1; done'
+
+      - name: Run unit/integration test
+        run: mvn verify
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/test_db
+          SPRING_DATASOURCE_USERNAME: pguser
+          SPRING_DATASOURCE_PASSWORD: password
+
+      - name: Shut down docker
+        run: docker compose down
+
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: ayamneelmaini/citronix-api
+          tags: latest
+          registry: docker.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
