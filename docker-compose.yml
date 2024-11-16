@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5433/prod_db
+      SPRING_DATASOURCE_USERNAME: pguser
+      SPRING_DATASOURCE_PASSWORD: password
+      SERVER_PORT: 8081
+    depends_on:
+      - db
+    volumes:
+      - maven-repo:/root/.m2
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: password
+      POSTGRES_PORT: 5433
+      POSTGRES_MULTIPLE_DATABASES: prod_db, test_db
+    ports:
+      - "5433:5433"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh
+    command: ["postgres", "-p", "5433"]
+
+volumes:
+  db_data:
+  maven-repo:
