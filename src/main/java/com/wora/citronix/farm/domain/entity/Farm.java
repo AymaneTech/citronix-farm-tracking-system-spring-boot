@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,5 +34,5 @@ public class Farm {
     private Timestamp timestamp;
 
     @OneToMany(mappedBy = "farm")
-    private List<Field> fields;
+    private List<Field> fields = new ArrayList<>();
 }

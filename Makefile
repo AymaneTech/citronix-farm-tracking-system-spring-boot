@@ -3,6 +3,9 @@
 up:
 	docker compose up 
 
+db: 
+	docker compose up db
+
 down:
 	docker compose down
 

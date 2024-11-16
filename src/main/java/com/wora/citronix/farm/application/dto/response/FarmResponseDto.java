@@ -7,7 +7,8 @@ import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
-public record FarmResponseDto(@NotBlank String name,
+public record FarmResponseDto(@NotNull Long id,
+                              @NotBlank String name,
                               @NotBlank String location,
                               @NotNull @Positive Double area,
                               @NotNull List<FieldEmbeddableDto> fields
