@@ -4,5 +4,5 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.GeneratedValue;
 
 @Embeddable
-public record FarmId(@GeneratedValue Long value) {
+public record FieldId(@GeneratedValue Long value) {
 }
