@@ -1,6 +1,6 @@
 package com.wora.citronix.common.application.validation;
 
-import com.wora.waitingroom.common.application.validation.validator.ReferenceExistsValidator;
+import com.wora.citronix.common.application.validation.validator.ReferenceExistsValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

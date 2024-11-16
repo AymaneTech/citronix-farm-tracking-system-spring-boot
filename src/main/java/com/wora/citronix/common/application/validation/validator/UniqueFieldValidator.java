@@ -1,6 +1,6 @@
 package com.wora.citronix.common.application.validation.validator;
 
-import com.wora.waitingroom.common.application.validation.UniqueField;
+import com.wora.citronix.common.application.validation.UniqueField;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -26,7 +26,7 @@ public class UniqueFieldValidator implements ConstraintValidator<UniqueField, Ob
         if (value == null) return true;
 
         final String queryStr = String.format(
-                "SELECT COUNT(e) FROM %s e WHERE e.%s = :value",
+                "SELECT COUNT(e) FROM %s e WHERE LOWER(e.%s) = LOWER(:value)",
                 entityClass.getSimpleName(), fieldName
         );
 
