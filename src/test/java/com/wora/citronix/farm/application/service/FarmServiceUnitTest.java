@@ -28,7 +28,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
-class FarmServiceTest {
+class FarmServiceUnitTest {
     @Mock
     private FarmRepository repository;
     @Mock

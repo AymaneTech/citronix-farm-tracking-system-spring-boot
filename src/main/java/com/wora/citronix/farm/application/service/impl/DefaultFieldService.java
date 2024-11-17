@@ -14,9 +14,6 @@ import com.wora.citronix.farm.domain.repository.FieldRepository;
 import com.wora.citronix.farm.domain.vo.FarmId;
 import com.wora.citronix.farm.domain.vo.FieldId;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -28,13 +25,6 @@ public class DefaultFieldService implements FieldService {
     private final FieldRepository repository;
     private final FieldMapper mapper;
     private final FarmRepository farmRepository;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    @Override
-    public Page<FieldResponseDto> findAll(int pageNum, int pageSize) {
-        return repository.findAll(PageRequest.of(pageNum, pageSize))
-                .map(mapper::toResponseDto);
-    }
 
     @Override
     public FieldResponseDto findById(com.wora.citronix.farm.domain.vo.FieldId id) {
@@ -102,12 +92,11 @@ public class DefaultFieldService implements FieldService {
                 .map(Field::getName)
                 .collect(Collectors.groupingBy(name -> name, Collectors.counting()))
                 .entrySet().stream()
-                .filter(entry -> entry.getValue() > 1)
+                .   filter(entry -> entry.getValue() > 1)
                 .map(Map.Entry::getKey)
                 .toList();
 
-        if (!duplicateNames.isEmpty()) {
+        if (!duplicateNames.isEmpty())
             throw new IllegalArgumentException("Duplicate field names found: " + duplicateNames);
-        }
     }
 }

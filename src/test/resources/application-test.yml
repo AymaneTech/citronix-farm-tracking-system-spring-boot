@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Wrm
+    name: citronix
   datasource:
     url: jdbc:postgresql://localhost:5433/test_db
     username: pguser

@@ -44,13 +44,13 @@ public class Farm {
     }
 
     public Farm ensureFieldCountWithinLimit() {
-        if (fields.size() == 10)
-            throw new EntityCreationException("maximum fields of a farm is 10 ");
+        if (fields.size() >= 10)
+            throw new EntityCreationException("maximum fields of a farm is 10");
         return this;
     }
 
     public Farm ensureFieldAreaWithinFarmCapacity(Double fieldArea) {
-        if (fieldArea > area / 2)
+        if (fieldArea > (area / 2))
             throw new EntityCreationException("field area should not be greater than 50% of farm area");
 
         double existingFieldsArea = fields.stream()

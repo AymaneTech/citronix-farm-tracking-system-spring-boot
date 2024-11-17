@@ -6,7 +6,6 @@ import com.wora.citronix.farm.application.service.FieldService;
 import com.wora.citronix.farm.domain.vo.FieldId;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FieldController {
     private final FieldService service;
-
-    @GetMapping
-    public ResponseEntity<Page<FieldResponseDto>> findAll(
-            @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "10") int pageSize
-    ) {
-        Page<FieldResponseDto> fields = service.findAll(pageNum, pageSize);
-        return ResponseEntity.ok(fields);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<FieldResponseDto> findById(@PathVariable Long id) {
