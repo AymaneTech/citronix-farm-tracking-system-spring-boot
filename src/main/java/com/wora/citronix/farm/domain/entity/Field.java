@@ -1,12 +1,15 @@
 package com.wora.citronix.farm.domain.entity;
 
 import com.wora.citronix.farm.domain.vo.FieldId;
+import com.wora.citronix.tree.domain.Tree;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 @Entity
 @Table(name = "fields")
@@ -28,6 +31,9 @@ public class Field {
 
     @ManyToOne
     private Farm farm;
+
+    @OneToMany(mappedBy = "field")
+    private List<Tree> trees;
 
     public Field(FieldId id, String name, Double area, Farm farm) {
         this.id = id;
