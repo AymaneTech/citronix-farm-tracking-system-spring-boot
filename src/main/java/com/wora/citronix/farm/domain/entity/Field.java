@@ -41,7 +41,7 @@ public class Field {
     }
 
     public int getMaxTreesForField() {
-        return (int) (area / 10_000) * 100;
+        return (int) (area * 0.01);
     }
 
     public boolean hasCapacityForNewTree(int currentTreeCount) {

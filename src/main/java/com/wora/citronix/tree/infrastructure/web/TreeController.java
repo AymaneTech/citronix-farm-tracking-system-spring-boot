@@ -1,4 +1,4 @@
-package com.wora.citronix.tree;
+package com.wora.citronix.tree.infrastructure.web;
 
 import com.wora.citronix.tree.application.dto.TreeRequestDto;
 import com.wora.citronix.tree.application.dto.TreeResponseDto;

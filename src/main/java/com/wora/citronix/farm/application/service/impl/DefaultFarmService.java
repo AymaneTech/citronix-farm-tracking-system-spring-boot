@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 @ApplicationService
 @RequiredArgsConstructor
 public class DefaultFarmService implements FarmService {
@@ -37,8 +39,8 @@ public class DefaultFarmService implements FarmService {
     @Override
     public FarmResponseDto create(FarmRequestDto dto) {
         Farm farm = mapper.toEntity(dto);
-        if (dto.fields() != null)
-            farm.setFields(fieldService.saveFarmFields(farm));
+        if (dto.fields() != null) farm.setFields(fieldService.saveFarmFields(farm));
+        else farm.setFields(List.of());
 
         Farm savedFarm = repository.save(farm);
         return mapper.toResponseDto(savedFarm);
