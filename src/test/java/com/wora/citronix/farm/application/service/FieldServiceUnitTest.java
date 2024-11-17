@@ -67,7 +67,7 @@ class FieldServiceUnitTest {
             given(repository.findById(field.getId())).willReturn(Optional.of(field));
             given(mapper.toResponseDto(field)).willReturn(new FieldResponseDto(
                     field.getId().value(), field.getName(), field.getArea(),
-                    new FarmEmbeddableDto(farm.getId().value(), farm.getName(), farm.getLocation(), farm.getArea())));
+                    new FarmEmbeddableDto(farm.getId().value(), farm.getName(), farm.getLocation(), farm.getArea()), null));
 
             FieldResponseDto actual = underTest.findById(field.getId());
             assertThat(actual).isNotNull();
@@ -156,7 +156,7 @@ class FieldServiceUnitTest {
             given(repository.existsByName(request.name())).willReturn(false);
             given(mapper.toEntity(request)).willReturn(expected);
             given(repository.save(expected)).willReturn(expected);
-            given(mapper.toResponseDto(expected)).willReturn(new FieldResponseDto(1L, request.name(), request.area(), null));
+            given(mapper.toResponseDto(expected)).willReturn(new FieldResponseDto(1L, request.name(), request.area(), null, null));
 
             FieldResponseDto actual = underTest.create(request);
 
@@ -298,7 +298,7 @@ class FieldServiceUnitTest {
 
             given(repository.findById(fieldId)).willReturn(Optional.of(existingField));
             given(mapper.toResponseDto(any(Field.class)))
-                    .willReturn(new FieldResponseDto(1L, request.name(), request.area(), null));
+                    .willReturn(new FieldResponseDto(1L, request.name(), request.area(), null, null));
 
             FieldResponseDto response = underTest.update(fieldId, request);
 
@@ -319,7 +319,7 @@ class FieldServiceUnitTest {
 
             given(repository.findById(fieldId)).willReturn(Optional.of(existingField));
             given(mapper.toResponseDto(any(Field.class)))
-                    .willReturn(new FieldResponseDto(1L, request.name(), request.area(), null));
+                    .willReturn(new FieldResponseDto(1L, request.name(), request.area(), null, null));
 
             FieldResponseDto response = underTest.update(fieldId, request);
 
@@ -329,7 +329,6 @@ class FieldServiceUnitTest {
                         assertThat(dto.name()).isEqualTo("updated field");
                         assertThat(dto.area()).isEqualTo(1500.0);
                     });
-
         }
     }
 
