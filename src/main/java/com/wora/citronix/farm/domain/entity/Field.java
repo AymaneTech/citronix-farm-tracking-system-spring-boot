@@ -1,12 +1,12 @@
 package com.wora.citronix.farm.domain.entity;
 
 import com.wora.citronix.farm.domain.vo.FieldId;
+import com.wora.citronix.tree.domain.Tree;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 @Entity
 @Table(name = "fields")
@@ -15,6 +15,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Field {
 
@@ -29,17 +30,21 @@ public class Field {
     @ManyToOne
     private Farm farm;
 
-    public Field(FieldId id, String name, Double area, Farm farm) {
-        this.id = id;
-        this.name = name;
-        this.area = area;
-        this.farm = farm;
-    }
+    @OneToMany(mappedBy = "field")
+    private List<Tree> trees;
 
     public Field(Long id, String name, Double area, Farm farm) {
         this.id = new FieldId(id);
         this.name = name;
         this.area = area;
         this.farm = farm;
+    }
+
+    public int getMaxTreesForField() {
+        return (int) (area / 10_000) * 100;
+    }
+
+    public boolean hasCapacityForNewTree(int currentTreeCount) {
+        return currentTreeCount < getMaxTreesForField();
     }
 }

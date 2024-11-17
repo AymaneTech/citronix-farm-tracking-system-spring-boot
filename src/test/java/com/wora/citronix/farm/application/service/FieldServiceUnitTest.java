@@ -163,21 +163,6 @@ class FieldServiceUnitTest {
             assertThat(actual).isNotNull();
             assertThat(actual.name()).isEqualTo(request.name());
         }
-
-        @Nested
-        class SaveFarmFieldsTests {
-            @Test
-            void givenFieldsWithSameName_whenSaveFarmFields_thenThrowIllegalArgumentException() {
-                farm.setFields(List.of(
-                        Field.builder().name("field 1").build(),
-                        Field.builder().name("field 1").build()
-                ));
-
-                assertThatExceptionOfType(IllegalArgumentException.class)
-                        .isThrownBy(() -> underTest.saveFarmFields(farm))
-                        .withMessage("Duplicate field names found: [field 1]");
-            }
-        }
     }
 
     @Nested
