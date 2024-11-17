@@ -48,4 +48,12 @@ public class Field {
         this.area = area;
         this.farm = farm;
     }
+
+    public int getMaxTreesForField() {
+        return (int) (area / 10_000) * 100;
+    }
+
+    public boolean hasCapacityForNewTree(int currentTreeCount) {
+        return currentTreeCount < getMaxTreesForField();
+    }
 }

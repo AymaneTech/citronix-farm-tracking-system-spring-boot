@@ -24,11 +24,17 @@ public class Tree {
 
     private LocalDate plantingDate;
 
-    private Productivity productivity;
+    @Transient
+    private Level level;
 
     @Transient
     private Double age;
 
     @ManyToOne
     private Field field;
+
+    public Tree(LocalDate plantingDate, Field field) {
+        this.plantingDate = plantingDate;
+        this.field = field;
+    }
 }
