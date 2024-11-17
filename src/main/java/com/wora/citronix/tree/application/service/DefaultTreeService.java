@@ -31,8 +31,13 @@ public class DefaultTreeService implements TreeService {
 
         Field field = fieldService.findEntityById(new FieldId(dto.fieldId()));
         int currentTreeCount = repository.countByFieldId(field.getId());
-        if (!field.hasCapacityForNewTree(currentTreeCount))
-            throw new EntityCreationException("Field Reached the max of trees");
+        if (!field.hasCapacityForNewTree(currentTreeCount)) {
+            int maxTrees = field.getMaxTreesForField();
+            throw new EntityCreationException(
+                    String.format("Field has reached maximum capacity of %d trees (current: %d)",
+                            maxTrees, currentTreeCount)
+            );
+        }
 
         Tree savedTree = repository.save(new Tree(dto.plantingDate(), field));
 
@@ -41,13 +46,13 @@ public class DefaultTreeService implements TreeService {
 
     @Override
     public TreeResponseDto update(TreeId id, TreeRequestDto dto) {
+        Tree tree = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("tree", id.value()));
         if (isPlantingPeriod(dto.plantingDate()))
             throw new EntityCreationException("You can create tree only in (March, April, May)");
 
         Field field = fieldService.findEntityById(new FieldId(dto.fieldId()));
-        Tree tree = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("tree", id.value()))
-                .setPlantingDate(dto.plantingDate())
+        tree.setPlantingDate(dto.plantingDate())
                 .setField(field);
 
         return mapper.toResponseDto(tree);
