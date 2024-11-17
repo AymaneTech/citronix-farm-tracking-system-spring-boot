@@ -2,6 +2,7 @@ package com.wora.citronix.tree.domain;
 
 import com.wora.citronix.farm.domain.entity.Field;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Past;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class Tree {
     private TreeId id;
 
     @Getter
+    @Past
     private LocalDate plantingDate;
 
     @Transient

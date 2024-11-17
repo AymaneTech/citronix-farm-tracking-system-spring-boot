@@ -44,7 +44,7 @@ public class Farm {
     }
 
     public Farm ensureFieldCountWithinLimit() {
-        if (fields.size() >= 10)
+        if (fields != null && fields.size() >= 10)
             throw new EntityCreationException("maximum fields of a farm is 10");
         return this;
     }
