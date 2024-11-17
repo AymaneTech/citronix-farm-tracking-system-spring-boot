@@ -1,11 +1,24 @@
 package com.wora.citronix.farm.application.service;
 
-import com.wora.citronix.common.application.service.CrudService;
 import com.wora.citronix.farm.application.dto.request.FieldRequestDto;
 import com.wora.citronix.farm.application.dto.response.FieldResponseDto;
 import com.wora.citronix.farm.domain.entity.Farm;
+import com.wora.citronix.farm.domain.entity.Field;
 import com.wora.citronix.farm.domain.vo.FieldId;
 
-public interface FieldService extends CrudService<FieldId, FieldRequestDto, FieldResponseDto> {
-    void saveFarmFields(Farm farm);
+import java.util.List;
+
+public interface FieldService {
+
+    FieldResponseDto findById(FieldId id);
+
+    FieldResponseDto create(FieldRequestDto dto);
+
+    List<Field> saveFarmFields(Farm farm);
+
+    FieldResponseDto update(FieldId id, FieldRequestDto dto);
+
+    void delete(FieldId id);
+
+    Field findEntityById(FieldId id);
 }

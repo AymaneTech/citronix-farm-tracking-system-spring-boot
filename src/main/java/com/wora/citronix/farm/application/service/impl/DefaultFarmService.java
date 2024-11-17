@@ -37,9 +37,9 @@ public class DefaultFarmService implements FarmService {
     @Override
     public FarmResponseDto create(FarmRequestDto dto) {
         Farm farm = mapper.toEntity(dto);
-        if (dto.fields() != null) {
-            fieldService.saveFarmFields(farm);
-        }
+        if (dto.fields() != null)
+            farm.setFields(fieldService.saveFarmFields(farm));
+
         Farm savedFarm = repository.save(farm);
         return mapper.toResponseDto(savedFarm);
     }
@@ -51,7 +51,7 @@ public class DefaultFarmService implements FarmService {
                 .setLocation(dto.location())
                 .setArea(dto.area()); // todo: verify that the new area is enough for existing fields
 
-        return  mapper.toResponseDto(farm);
+        return mapper.toResponseDto(farm);
     }
 
     @Override

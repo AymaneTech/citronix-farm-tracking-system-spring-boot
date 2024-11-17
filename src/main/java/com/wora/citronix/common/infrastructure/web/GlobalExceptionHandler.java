@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
 
     public static final String VALIDATION_FAILED_MESSAGE = "Validation failed";
     public static final String ENTITY_NOT_FOUND_MESSAGE = "Resource Not Found";
+    public static final String ENTITY_CREATION_MESSAGE = "error creating entity";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -82,9 +83,9 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 LocalDateTime.now(),
-                ex.getMessage(),
+                ENTITY_CREATION_MESSAGE,
                 request.getDescription(false),
-                String.join("\n", ex.errors())
+                ex.getMessage()
         );
     }
 
