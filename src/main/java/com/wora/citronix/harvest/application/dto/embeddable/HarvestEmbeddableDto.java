@@ -5,7 +5,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record HarvestEmbeddableDto(@NotNull LocalDate date,
+public record HarvestEmbeddableDto(@NotNull Long id,
+                                   @NotNull LocalDate date,
                                    @NotNull Season season,
                                    @NotNull Double totalQuantity) {
 }

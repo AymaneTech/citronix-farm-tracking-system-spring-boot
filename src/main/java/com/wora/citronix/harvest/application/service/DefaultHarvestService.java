@@ -37,7 +37,7 @@ public class DefaultHarvestService implements HarvestService {
     public HarvestResponseDto create(HarvestRequestDto dto) {
         Season season = Season.fromMonth(dto.date());
         if (repository.existsBySeason(season))
-            throw new AlreadyExistsException(String.format("Already Exists A harvest in this season: %s, in date %s ", season, dto.date()));
+            throw new AlreadyExistsException(String.format("Already Exists A harvest in this season: %s, in date %s", season, dto.date()));
 
         Harvest savedHarvest = repository.save(new Harvest(dto.date(), season));
         return mapper.toResponseDto(savedHarvest);
