@@ -67,7 +67,6 @@ class TreeServiceUnitTest {
             TreeRequestDto request = new TreeRequestDto(LocalDate.of(2024, 3, 27), 8L);
             given(fieldService.findEntityById(any(FieldId.class))).willThrow(EntityNotFoundException.class);
 
-
             assertThatExceptionOfType(EntityNotFoundException.class)
                     .isThrownBy(() -> underTest.plant(request));
         }

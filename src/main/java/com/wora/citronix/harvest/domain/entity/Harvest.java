@@ -18,13 +18,19 @@ import java.time.LocalDate;
 @Accessors(chain = true)
 @NoArgsConstructor
 public class Harvest {
-   @EmbeddedId
-   @AttributeOverride(name = "value", column = @Column(name = "id"))
-   private HarvestId id;
+    @EmbeddedId
+    @AttributeOverride(name = "value", column = @Column(name = "id"))
+    private HarvestId id;
 
-   private LocalDate date;
+    private LocalDate date;
 
-   private Season season;
+    @Enumerated(EnumType.STRING)
+    private Season season;
 
-   private Double totalQuantity;
+    private Double totalQuantity;
+
+    public Harvest(LocalDate date, Season season) {
+        this.date = date;
+        this.season = season;
+    }
 }
