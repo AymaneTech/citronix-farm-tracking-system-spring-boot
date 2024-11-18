@@ -62,4 +62,8 @@ public class Tree {
         int months = period.getMonths();
         return years + (months / 12.0);
     }
+
+    public boolean isEligible() {
+        return getAge() <= 20;
+    }
 }

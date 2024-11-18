@@ -5,6 +5,7 @@ import com.wora.citronix.common.domain.exception.EntityNotFoundException;
 import com.wora.citronix.harvest.application.dto.request.HarvestRequestDto;
 import com.wora.citronix.harvest.application.dto.response.HarvestResponseDto;
 import com.wora.citronix.harvest.application.mapper.HarvestMapper;
+import com.wora.citronix.harvest.application.service.impl.DefaultHarvestService;
 import com.wora.citronix.harvest.domain.entity.Harvest;
 import com.wora.citronix.harvest.domain.repository.HarvestRepository;
 import com.wora.citronix.harvest.domain.vo.HarvestId;
@@ -50,7 +51,7 @@ class HarvestServiceUnitTest {
         void givenHarvestsExists_whenFindAll_thenSuccess() {
             given(repository.findAll(any(PageRequest.class)))
                     .willReturn(new PageImpl<>(List.of(harvest)));
-            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null));
+            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null, null));
 
             Page<HarvestResponseDto> actual = underTest.findAll(0, 10);
             assertThat(actual).isNotNull();
@@ -83,7 +84,7 @@ class HarvestServiceUnitTest {
         void givenExistentId_whenFindById_thenSuccess() {
             HarvestId harvestId = new HarvestId(2L);
             given(repository.findById(harvestId)).willReturn(Optional.of(harvest));
-            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null));
+            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null, null));
 
             HarvestResponseDto actual = underTest.findById(harvestId);
 
@@ -97,7 +98,7 @@ class HarvestServiceUnitTest {
         @Test
         void givenHarvestAlreadyExistsInSameSeason_whenCreate_thenThrowAlreadyExists() {
             HarvestRequestDto request = new HarvestRequestDto(harvest.getDate());
-            Season season = Season.fromMonth(harvest.getDate());
+            Season season = Season.fromDate(harvest.getDate());
             given(repository.existsBySeason(season)).willReturn(true);
 
             assertThatExceptionOfType(AlreadyExistsException.class)
@@ -108,10 +109,10 @@ class HarvestServiceUnitTest {
         @Test
         void givenValidRequest_whenCreate_thenSuccess() {
             HarvestRequestDto request = new HarvestRequestDto(harvest.getDate());
-            Season season = Season.fromMonth(harvest.getDate());
+            Season season = Season.fromDate(harvest.getDate());
             given(repository.existsBySeason(season)).willReturn(false);
             given(repository.save(any(Harvest.class))).willReturn(harvest);
-            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null));
+            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null, null));
 
             HarvestResponseDto actual = underTest.create(request);
 

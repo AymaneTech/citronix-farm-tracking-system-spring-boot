@@ -1,6 +1,6 @@
 package com.wora.citronix.farm.domain.entity;
 
-import com.wora.citronix.common.domain.exception.EntityCreationException;
+import com.wora.citronix.common.domain.exception.BusinessValidationException;
 import com.wora.citronix.common.domain.vo.Timestamp;
 import com.wora.citronix.farm.domain.vo.FarmId;
 import jakarta.persistence.*;
@@ -45,20 +45,20 @@ public class Farm {
 
     public Farm ensureFieldCountWithinLimit() {
         if (fields != null && fields.size() >= 10)
-            throw new EntityCreationException("maximum fields of a farm is 10");
+            throw new BusinessValidationException("maximum fields of a farm is 10");
         return this;
     }
 
     public Farm ensureFieldAreaWithinFarmCapacity(Double fieldArea) {
         if (fieldArea > (area / 2))
-            throw new EntityCreationException("field area should not be greater than 50% of farm area");
+            throw new BusinessValidationException("field area should not be greater than 50% of farm area");
 
         double existingFieldsArea = fields.stream()
                 .mapToDouble(Field::getArea)
                 .sum();
 
         if (fieldArea > (area - existingFieldsArea))
-            throw new EntityCreationException("farm doesn't have enough space for tis field");
+            throw new BusinessValidationException("farm doesn't have enough space for tis field");
         return this;
     }
 }

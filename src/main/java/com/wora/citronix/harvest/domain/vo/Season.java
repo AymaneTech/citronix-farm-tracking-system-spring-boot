@@ -6,7 +6,7 @@ import java.time.Month;
 public enum Season {
     SPRING, SUMMER, FALL, WINTER;
 
-    public static Season fromMonth(LocalDate date) {
+    public static Season fromDate(LocalDate date) {
         Month month = date.getMonth();
         int dayOfMonth = date.getDayOfMonth();
 
@@ -23,6 +23,6 @@ public enum Season {
     }
 
     public boolean matches(LocalDate date) {
-        return this == fromMonth(date);
+        return this == fromDate(date);
     }
 }
