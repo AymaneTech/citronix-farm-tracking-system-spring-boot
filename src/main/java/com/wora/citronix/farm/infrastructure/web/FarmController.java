@@ -19,7 +19,7 @@ public class FarmController {
 
     @GetMapping
     public ResponseEntity<Page<FarmResponseDto>> findAll(
-            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "0") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize) {
 
         Page<FarmResponseDto> farms = service.findAll(pageNum, pageSize);

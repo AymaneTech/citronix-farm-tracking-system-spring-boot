@@ -1,6 +1,6 @@
 package com.wora.citronix.common.infrastructure.web;
 
-import com.wora.citronix.common.domain.ErrorResponse;
+import com.wora.citronix.common.domain.vo.ErrorResponse;
 import com.wora.citronix.common.domain.exception.BusinessValidationException;
 import com.wora.citronix.common.domain.exception.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;

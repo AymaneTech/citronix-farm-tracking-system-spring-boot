@@ -50,7 +50,7 @@ public class DefaultFieldService implements FieldService {
     }
 
     @Override
-    public List<Field> saveFarmFields(Farm farm) {
+    public void validateFields(Farm farm) {
         validateDuplicatedFieldNames(farm);
 
         farm.ensureFieldCountWithinLimit();
@@ -58,8 +58,6 @@ public class DefaultFieldService implements FieldService {
                 .peek(field -> field.setFarm(farm))
                 .map(Field::getArea)
                 .forEach(farm::ensureFieldAreaWithinFarmCapacity);
-
-        return repository.saveAll(farm.getFields());
     }
 
     @Override

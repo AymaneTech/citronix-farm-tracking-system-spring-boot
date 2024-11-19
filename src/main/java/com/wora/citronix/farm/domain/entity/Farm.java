@@ -33,7 +33,7 @@ public class Farm {
     @Embedded
     private Timestamp timestamp;
 
-    @OneToMany(mappedBy = "farm", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "farm", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Field> fields = new ArrayList<>();
 
     public Farm(Long id, String name, String location, Double area) {
@@ -53,12 +53,16 @@ public class Farm {
         if (fieldArea > (area / 2))
             throw new BusinessValidationException("field area should not be greater than 50% of farm area");
 
-        double existingFieldsArea = fields.stream()
-                .mapToDouble(Field::getArea)
-                .sum();
+        if (fields != null) {
 
-        if (fieldArea > (area - existingFieldsArea))
-            throw new BusinessValidationException("farm doesn't have enough space for tis field");
+            double existingFieldsArea = fields.stream()
+                    .mapToDouble(Field::getArea)
+                    .sum();
+
+            final double remainingArea = (area - existingFieldsArea);
+            if (fieldArea > remainingArea)
+                throw new BusinessValidationException("farm doesn't have enough space for this field");
+        }
         return this;
     }
 }

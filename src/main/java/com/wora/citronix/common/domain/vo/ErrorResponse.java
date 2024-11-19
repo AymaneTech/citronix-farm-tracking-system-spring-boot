@@ -1,4 +1,4 @@
-package com.wora.citronix.common.domain;
+package com.wora.citronix.common.domain.vo;
 
 import java.time.LocalDateTime;
 
