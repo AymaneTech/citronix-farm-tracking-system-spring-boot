@@ -132,7 +132,7 @@ class FieldServiceUnitTest {
             given(farmRepository.findById(any(FarmId.class))).willReturn(Optional.of(farm));
             assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.create(request))
-                    .withMessage("farm doesn't have enough space for tis field");
+                    .withMessage("farm doesn't have enough space for this field");
         }
 
         @Test
@@ -184,7 +184,7 @@ class FieldServiceUnitTest {
             ));
 
             assertThatExceptionOfType(BusinessValidationException.class)
-                    .isThrownBy(() -> underTest.saveFarmFields(farm))
+                    .isThrownBy(() -> underTest.validateFields(farm))
                     .withMessage("maximum fields of a farm is 10");
         }
 
@@ -195,7 +195,7 @@ class FieldServiceUnitTest {
             ));
 
             assertThatExceptionOfType(BusinessValidationException.class)
-                    .isThrownBy(() -> underTest.saveFarmFields(farm))
+                    .isThrownBy(() -> underTest.validateFields(farm))
                     .withMessage("field area should not be greater than 50% of farm area");
         }
 
@@ -208,8 +208,8 @@ class FieldServiceUnitTest {
             ));
 
             assertThatExceptionOfType(BusinessValidationException.class)
-                    .isThrownBy(() -> underTest.saveFarmFields(farm))
-                    .withMessage("farm doesn't have enough space for tis field");
+                    .isThrownBy(() -> underTest.validateFields(farm))
+                    .withMessage("farm doesn't have enough space for this field");
         }
 
         @Test
@@ -220,7 +220,7 @@ class FieldServiceUnitTest {
             ));
 
             assertThatExceptionOfType(IllegalArgumentException.class)
-                    .isThrownBy(() -> underTest.saveFarmFields(farm))
+                    .isThrownBy(() -> underTest.validateFields(farm))
                     .withMessage("Duplicate field names found: [field 1]");
         }
 
@@ -234,14 +234,7 @@ class FieldServiceUnitTest {
 
             given(repository.saveAll(fields)).willReturn(fields);
 
-            List<Field> savedFields = underTest.saveFarmFields(farm);
-
-            assertThat(savedFields)
-                    .isNotNull()
-                    .hasSize(2)
-                    .isEqualTo(fields);
-
-            verify(repository).saveAll(fields);
+            underTest.validateFields(farm);
         }
     }
 
@@ -287,7 +280,7 @@ class FieldServiceUnitTest {
 
             assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.update(fieldId, request))
-                    .withMessage("farm doesn't have enough space for tis field");
+                    .withMessage("farm doesn't have enough space for this field");
         }
 
         @Test

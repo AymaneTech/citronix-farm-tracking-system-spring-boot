@@ -35,6 +35,7 @@ public class HarvestDetail {
     private Tree tree;
 
     public HarvestDetail(Harvest harvest, Tree tree, LocalDate date, Double quantity) {
+        this.id = new HarvestDetailId(harvest.getId(), tree.getId());
         this.harvest = harvest;
         this.tree = tree;
         this.date = date;

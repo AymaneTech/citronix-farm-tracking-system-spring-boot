@@ -14,17 +14,16 @@ import java.time.Period;
 @Entity
 @Table(name = "trees")
 
+@Getter
 @Setter
 @Accessors(chain = true)
 @RequiredArgsConstructor
 public class Tree {
 
-    @Getter
     @EmbeddedId
     @AttributeOverride(name = "value", column = @Column(name = "id"))
     private TreeId id;
 
-    @Getter
     @Past
     private LocalDate plantingDate;
 
@@ -34,7 +33,6 @@ public class Tree {
     @Transient
     private Double age;
 
-    @Getter
     @ManyToOne
     private Field field;
 

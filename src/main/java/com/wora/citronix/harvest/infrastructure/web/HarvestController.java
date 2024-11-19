@@ -20,7 +20,7 @@ public class HarvestController {
 
     @GetMapping
     public ResponseEntity<Page<HarvestResponseDto>> findAll(
-            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "0") int pageNum,
             @RequestParam(defaultValue = "10") int pageSize
     ) {
         Page<HarvestResponseDto> harvests = service.findAll(pageNum, pageSize);
