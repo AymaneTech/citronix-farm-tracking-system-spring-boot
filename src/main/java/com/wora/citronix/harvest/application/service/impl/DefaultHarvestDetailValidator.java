@@ -4,6 +4,7 @@ import com.wora.citronix.common.domain.exception.BusinessValidationException;
 import com.wora.citronix.harvest.application.service.HarvestDetailValidator;
 import com.wora.citronix.harvest.domain.entity.Harvest;
 import com.wora.citronix.harvest.domain.repository.HarvestDetailRepository;
+import com.wora.citronix.harvest.domain.vo.Season;
 import com.wora.citronix.tree.domain.Tree;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,15 +25,13 @@ public class DefaultHarvestDetailValidator implements HarvestDetailValidator {
     }
 
     private void validateTreeEligibility(Tree tree) {
-        if (!tree.isEligible()) {
+        if (!tree.isEligible())
             throw new BusinessValidationException("Tree is not eligible for harvest");
-        }
     }
 
     private void validateHarvestSeason(Harvest harvest, LocalDate harvestDate) {
-        if (!harvest.isInSeason(harvestDate)) {
+        if (!harvest.isInSeason(harvestDate))
             throw new BusinessValidationException("Harvest detail date doesn't match harvest season");
-        }
     }
 
     private void validateTreeNotAlreadyHarvested(Tree tree, Harvest harvest) {
