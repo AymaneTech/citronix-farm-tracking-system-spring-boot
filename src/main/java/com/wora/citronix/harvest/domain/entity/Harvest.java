@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -43,6 +44,8 @@ public class Harvest {
     }
 
     public void addNewHarvestDetail(HarvestDetail harvestDetail) {
+        if (harvestDetails == null) harvestDetails = new ArrayList<>();
+
         this.harvestDetails.add(harvestDetail);
         this.totalQuantity = harvestDetails.stream()
                 .mapToDouble(HarvestDetail::getQuantity)

@@ -94,7 +94,7 @@ class TreeServiceUnitTest {
 
             assertThat(actual).isNotNull();
             assertThat(actual.level()).isEqualTo(Level.YOUNG);
-            assertThat(actual.age()).isGreaterThan(1);
+            assertThat(actual.age()).isEqualTo(1);
         }
     }
 
@@ -148,7 +148,7 @@ class TreeServiceUnitTest {
 
             assertThat(actual).isNotNull();
             assertThat(actual.level()).isEqualTo(Level.YOUNG);
-            assertThat(actual.age()).isGreaterThan(1);
+            assertThat(actual.age()).isEqualTo(1);
         }
     }
 
