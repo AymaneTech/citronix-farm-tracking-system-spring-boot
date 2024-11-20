@@ -14,17 +14,16 @@ import java.time.Period;
 @Entity
 @Table(name = "trees")
 
+@Getter
 @Setter
 @Accessors(chain = true)
 @RequiredArgsConstructor
 public class Tree {
 
-    @Getter
     @EmbeddedId
     @AttributeOverride(name = "value", column = @Column(name = "id"))
     private TreeId id;
 
-    @Getter
     @Past
     private LocalDate plantingDate;
 
@@ -32,9 +31,8 @@ public class Tree {
     private Level level;
 
     @Transient
-    private Double age;
+    private int age;
 
-    @Getter
     @ManyToOne
     private Field field;
 
@@ -47,19 +45,23 @@ public class Tree {
         return level != null ? level : Level.fromAge(calculateAge());
     }
 
-    public Double getAge() {
-        return age != null ? age : calculateAge();
+    public int getAge() {
+        return age != 0 ? age : calculateAge();
     }
 
-    private Double calculateAge() {
+    private int calculateAge() {
         LocalDate currentDate = LocalDate.now();
         assert plantingDate != null;
         if (plantingDate.isAfter(currentDate)) {
-            return 0.0;
+            return 0;
         }
         Period period = Period.between(plantingDate, currentDate);
         int years = period.getYears();
         int months = period.getMonths();
-        return years + (months / 12.0);
+        return years + (months / 12);
+    }
+
+    public boolean isEligible() {
+        return getAge() <= 20;
     }
 }

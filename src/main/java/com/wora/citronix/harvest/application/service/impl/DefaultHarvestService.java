@@ -1,4 +1,4 @@
-package com.wora.citronix.harvest.application.service;
+package com.wora.citronix.harvest.application.service.impl;
 
 import com.wora.citronix.common.application.service.ApplicationService;
 import com.wora.citronix.common.domain.exception.AlreadyExistsException;
@@ -6,6 +6,7 @@ import com.wora.citronix.common.domain.exception.EntityNotFoundException;
 import com.wora.citronix.harvest.application.dto.request.HarvestRequestDto;
 import com.wora.citronix.harvest.application.dto.response.HarvestResponseDto;
 import com.wora.citronix.harvest.application.mapper.HarvestMapper;
+import com.wora.citronix.harvest.application.service.HarvestService;
 import com.wora.citronix.harvest.domain.entity.Harvest;
 import com.wora.citronix.harvest.domain.repository.HarvestRepository;
 import com.wora.citronix.harvest.domain.vo.HarvestId;
@@ -35,11 +36,17 @@ public class DefaultHarvestService implements HarvestService {
 
     @Override
     public HarvestResponseDto create(HarvestRequestDto dto) {
-        Season season = Season.fromMonth(dto.date());
+        Season season = Season.fromDate(dto.date());
         if (repository.existsBySeason(season))
             throw new AlreadyExistsException(String.format("Already Exists A harvest in this season: %s, in date %s", season, dto.date()));
 
         Harvest savedHarvest = repository.save(new Harvest(dto.date(), season));
         return mapper.toResponseDto(savedHarvest);
+    }
+
+    @Override
+    public Harvest findEntityById(HarvestId id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("harvest", id.value()));
     }
 }

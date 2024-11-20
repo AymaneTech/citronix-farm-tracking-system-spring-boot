@@ -14,7 +14,7 @@ public interface FieldService {
 
     FieldResponseDto create(FieldRequestDto dto);
 
-    List<Field> saveFarmFields(Farm farm);
+    void validateFields(Farm farm);
 
     FieldResponseDto update(FieldId id, FieldRequestDto dto);
 

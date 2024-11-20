@@ -39,10 +39,9 @@ public class DefaultFarmService implements FarmService {
     @Override
     public FarmResponseDto create(FarmRequestDto dto) {
         Farm farm = mapper.toEntity(dto);
-        if (dto.fields() != null) farm.setFields(fieldService.saveFarmFields(farm));
-        else farm.setFields(List.of());
-
+        if (dto.fields() != null) fieldService.validateFields(farm);
         Farm savedFarm = repository.save(farm);
+
         return mapper.toResponseDto(savedFarm);
     }
 

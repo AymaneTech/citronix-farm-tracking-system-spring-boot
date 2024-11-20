@@ -1,7 +1,7 @@
 package com.wora.citronix.tree.application.service;
 
 import com.wora.citronix.common.application.service.ApplicationService;
-import com.wora.citronix.common.domain.exception.EntityCreationException;
+import com.wora.citronix.common.domain.exception.BusinessValidationException;
 import com.wora.citronix.common.domain.exception.EntityNotFoundException;
 import com.wora.citronix.farm.application.service.FieldService;
 import com.wora.citronix.farm.domain.entity.Field;
@@ -27,13 +27,13 @@ public class DefaultTreeService implements TreeService {
     @Override
     public TreeResponseDto plant(TreeRequestDto dto) {
         if (isPlantingPeriod(dto.plantingDate()))
-            throw new EntityCreationException("You can create tree only in (March, April, May)");
+            throw new BusinessValidationException("You can create tree only in (March, April, May)");
 
         Field field = fieldService.findEntityById(new FieldId(dto.fieldId()));
         int currentTreeCount = repository.countByFieldId(field.getId());
         if (!field.hasCapacityForNewTree(currentTreeCount)) {
             int maxTrees = field.getMaxTreesForField();
-            throw new EntityCreationException(
+            throw new BusinessValidationException(
                     String.format("Field has reached maximum capacity of %d trees (current: %d)",
                             maxTrees, currentTreeCount)
             );
@@ -49,7 +49,7 @@ public class DefaultTreeService implements TreeService {
         Tree tree = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("tree", id.value()));
         if (isPlantingPeriod(dto.plantingDate()))
-            throw new EntityCreationException("You can create tree only in (March, April, May)");
+            throw new BusinessValidationException("You can create tree only in (March, April, May)");
 
         Field field = fieldService.findEntityById(new FieldId(dto.fieldId()));
         tree.setPlantingDate(dto.plantingDate())
@@ -70,6 +70,12 @@ public class DefaultTreeService implements TreeService {
         if (!repository.existsById(id))
             throw new EntityNotFoundException("tree", id.value());
         repository.deleteById(id);
+    }
+
+    @Override
+    public Tree findEntityById(TreeId id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("tree", id.value()));
     }
 
     private boolean isPlantingPeriod(LocalDate plantingDate) {

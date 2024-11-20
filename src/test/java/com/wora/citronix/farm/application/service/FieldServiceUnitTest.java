@@ -1,7 +1,7 @@
 package com.wora.citronix.farm.application.service;
 
 import com.wora.citronix.common.domain.exception.AlreadyExistsException;
-import com.wora.citronix.common.domain.exception.EntityCreationException;
+import com.wora.citronix.common.domain.exception.BusinessValidationException;
 import com.wora.citronix.common.domain.exception.EntityNotFoundException;
 import com.wora.citronix.farm.application.dto.embeddable.FarmEmbeddableDto;
 import com.wora.citronix.farm.application.dto.request.FieldRequestDto;
@@ -105,7 +105,7 @@ class FieldServiceUnitTest {
             ));
             given(farmRepository.findById(any(FarmId.class))).willReturn(Optional.of(farm));
 
-            assertThatExceptionOfType(EntityCreationException.class)
+            assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.create(request))
                     .withMessage("maximum fields of a farm is 10");
         }
@@ -116,7 +116,7 @@ class FieldServiceUnitTest {
 
             given(farmRepository.findById(any(FarmId.class))).willReturn(Optional.of(farm));
 
-            assertThatExceptionOfType(EntityCreationException.class)
+            assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.create(request))
                     .withMessage("field area should not be greater than 50% of farm area");
         }
@@ -130,9 +130,9 @@ class FieldServiceUnitTest {
             ));
 
             given(farmRepository.findById(any(FarmId.class))).willReturn(Optional.of(farm));
-            assertThatExceptionOfType(EntityCreationException.class)
+            assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.create(request))
-                    .withMessage("farm doesn't have enough space for tis field");
+                    .withMessage("farm doesn't have enough space for this field");
         }
 
         @Test
@@ -183,8 +183,8 @@ class FieldServiceUnitTest {
                     new Field(11L, "field 11", 100.0, farm)
             ));
 
-            assertThatExceptionOfType(EntityCreationException.class)
-                    .isThrownBy(() -> underTest.saveFarmFields(farm))
+            assertThatExceptionOfType(BusinessValidationException.class)
+                    .isThrownBy(() -> underTest.validateFields(farm))
                     .withMessage("maximum fields of a farm is 10");
         }
 
@@ -194,8 +194,8 @@ class FieldServiceUnitTest {
                     new Field(1L, "field 1", 3000.0, farm)
             ));
 
-            assertThatExceptionOfType(EntityCreationException.class)
-                    .isThrownBy(() -> underTest.saveFarmFields(farm))
+            assertThatExceptionOfType(BusinessValidationException.class)
+                    .isThrownBy(() -> underTest.validateFields(farm))
                     .withMessage("field area should not be greater than 50% of farm area");
         }
 
@@ -207,9 +207,9 @@ class FieldServiceUnitTest {
                     new Field(3L, "field 3", 1500.0, farm)
             ));
 
-            assertThatExceptionOfType(EntityCreationException.class)
-                    .isThrownBy(() -> underTest.saveFarmFields(farm))
-                    .withMessage("farm doesn't have enough space for tis field");
+            assertThatExceptionOfType(BusinessValidationException.class)
+                    .isThrownBy(() -> underTest.validateFields(farm))
+                    .withMessage("farm doesn't have enough space for this field");
         }
 
         @Test
@@ -220,7 +220,7 @@ class FieldServiceUnitTest {
             ));
 
             assertThatExceptionOfType(IllegalArgumentException.class)
-                    .isThrownBy(() -> underTest.saveFarmFields(farm))
+                    .isThrownBy(() -> underTest.validateFields(farm))
                     .withMessage("Duplicate field names found: [field 1]");
         }
 
@@ -234,14 +234,7 @@ class FieldServiceUnitTest {
 
             given(repository.saveAll(fields)).willReturn(fields);
 
-            List<Field> savedFields = underTest.saveFarmFields(farm);
-
-            assertThat(savedFields)
-                    .isNotNull()
-                    .hasSize(2)
-                    .isEqualTo(fields);
-
-            verify(repository).saveAll(fields);
+            underTest.validateFields(farm);
         }
     }
 
@@ -267,7 +260,7 @@ class FieldServiceUnitTest {
 
             given(repository.findById(fieldId)).willReturn(Optional.of(existingField));
 
-            assertThatExceptionOfType(EntityCreationException.class)
+            assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.update(fieldId, request))
                     .withMessage("field area should not be greater than 50% of farm area");
         }
@@ -285,9 +278,9 @@ class FieldServiceUnitTest {
 
             given(repository.findById(fieldId)).willReturn(Optional.of(existingField));
 
-            assertThatExceptionOfType(EntityCreationException.class)
+            assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.update(fieldId, request))
-                    .withMessage("farm doesn't have enough space for tis field");
+                    .withMessage("farm doesn't have enough space for this field");
         }
 
         @Test

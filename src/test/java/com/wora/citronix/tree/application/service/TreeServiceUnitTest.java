@@ -1,6 +1,6 @@
 package com.wora.citronix.tree.application.service;
 
-import com.wora.citronix.common.domain.exception.EntityCreationException;
+import com.wora.citronix.common.domain.exception.BusinessValidationException;
 import com.wora.citronix.common.domain.exception.EntityNotFoundException;
 import com.wora.citronix.farm.application.service.FieldService;
 import com.wora.citronix.farm.domain.entity.Farm;
@@ -57,7 +57,7 @@ class TreeServiceUnitTest {
         void givenDateOutOfPlantingPeriod_whenPlant_thenThrowEntityCreationException() {
             TreeRequestDto request = new TreeRequestDto(LocalDate.now(), 8L);
 
-            assertThatExceptionOfType(EntityCreationException.class)
+            assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.plant(request))
                     .withMessage("You can create tree only in (March, April, May)");
         }
@@ -77,7 +77,7 @@ class TreeServiceUnitTest {
             given(fieldService.findEntityById(any(FieldId.class))).willReturn(field);
             given(repository.countByFieldId(field.getId())).willReturn(10);
 
-            assertThatExceptionOfType(EntityCreationException.class)
+            assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.plant(request))
                     .withMessage("Field has reached maximum capacity of 10 trees (current: 10)");
         }
@@ -94,7 +94,7 @@ class TreeServiceUnitTest {
 
             assertThat(actual).isNotNull();
             assertThat(actual.level()).isEqualTo(Level.YOUNG);
-            assertThat(actual.age()).isGreaterThan(1);
+            assertThat(actual.age()).isEqualTo(1);
         }
     }
 
@@ -106,7 +106,7 @@ class TreeServiceUnitTest {
             TreeRequestDto request = new TreeRequestDto(LocalDate.now(), 8L);
             given(repository.findById(treeId)).willReturn(Optional.of(tree));
 
-            assertThatExceptionOfType(EntityCreationException.class)
+            assertThatExceptionOfType(BusinessValidationException.class)
                     .isThrownBy(() -> underTest.update(treeId, request))
                     .withMessage("You can create tree only in (March, April, May)");
         }
@@ -148,7 +148,7 @@ class TreeServiceUnitTest {
 
             assertThat(actual).isNotNull();
             assertThat(actual.level()).isEqualTo(Level.YOUNG);
-            assertThat(actual.age()).isGreaterThan(1);
+            assertThat(actual.age()).isEqualTo(1);
         }
     }
 

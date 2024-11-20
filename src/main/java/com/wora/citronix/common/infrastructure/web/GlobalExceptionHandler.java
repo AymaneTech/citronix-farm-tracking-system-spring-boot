@@ -1,7 +1,7 @@
 package com.wora.citronix.common.infrastructure.web;
 
-import com.wora.citronix.common.domain.ErrorResponse;
-import com.wora.citronix.common.domain.exception.EntityCreationException;
+import com.wora.citronix.common.domain.vo.ErrorResponse;
+import com.wora.citronix.common.domain.exception.BusinessValidationException;
 import com.wora.citronix.common.domain.exception.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -77,9 +77,9 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler(EntityCreationException.class)
+    @ExceptionHandler(BusinessValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse entityCreationException(final EntityCreationException ex, WebRequest request) {
+    public ErrorResponse entityCreationException(final BusinessValidationException ex, WebRequest request) {
         return new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 LocalDateTime.now(),

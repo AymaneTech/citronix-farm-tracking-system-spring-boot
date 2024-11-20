@@ -64,7 +64,7 @@ class HarvestControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(jsonPath("$.errors")
-                        .value(String.format("Already Exists A harvest in this season: %s, in date %s", Season.fromMonth(request.date()), request.date())));
+                        .value(String.format("Already Exists A harvest in this season: %s, in date %s", Season.fromDate(request.date()), request.date())));
     }
 
     @Test
@@ -75,7 +75,7 @@ class HarvestControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(jsonPath("$.date").value(request.date().toString()))
-                .andExpect(jsonPath("$.season").value(Season.fromMonth(request.date()).toString()));
+                .andExpect(jsonPath("$.season").value(Season.fromDate(request.date()).toString()));
     }
 
 }
