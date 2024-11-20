@@ -1,12 +1,14 @@
 package com.wora.citronix.farm.infrastructure.web;
 
 import com.wora.citronix.farm.application.dto.request.FarmRequestDto;
+import com.wora.citronix.farm.application.dto.request.FarmSearchRequest;
 import com.wora.citronix.farm.application.dto.response.FarmResponseDto;
 import com.wora.citronix.farm.application.service.FarmService;
 import com.wora.citronix.farm.domain.vo.FarmId;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +22,9 @@ public class FarmController {
     @GetMapping
     public ResponseEntity<Page<FarmResponseDto>> findAll(
             @RequestParam(defaultValue = "0") int pageNum,
-            @RequestParam(defaultValue = "10") int pageSize) {
-
-        Page<FarmResponseDto> farms = service.findAll(pageNum, pageSize);
+            @RequestParam(defaultValue = "10") int pageSize,
+            @ModelAttribute FarmSearchRequest searchCriteria) {
+        Page<FarmResponseDto> farms = service.findAllWithSpecification(PageRequest.of(pageNum, pageSize), searchCriteria);
         return ResponseEntity.ok(farms);
     }
 

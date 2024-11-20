@@ -3,6 +3,7 @@ package com.wora.citronix.farm.application.service.impl;
 import com.wora.citronix.common.application.service.ApplicationService;
 import com.wora.citronix.common.domain.exception.EntityNotFoundException;
 import com.wora.citronix.farm.application.dto.request.FarmRequestDto;
+import com.wora.citronix.farm.application.dto.request.FarmSearchRequest;
 import com.wora.citronix.farm.application.dto.response.FarmResponseDto;
 import com.wora.citronix.farm.application.mapper.FarmMapper;
 import com.wora.citronix.farm.application.service.FarmService;
@@ -13,8 +14,12 @@ import com.wora.citronix.farm.domain.vo.FarmId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+
+import static com.wora.citronix.farm.domain.specification.FarmSpecification.*;
 
 @ApplicationService
 @RequiredArgsConstructor
@@ -26,6 +31,16 @@ public class DefaultFarmService implements FarmService {
     @Override
     public Page<FarmResponseDto> findAll(int pageNum, int pageSize) {
         return repository.findAll(PageRequest.of(pageNum, pageSize))
+                .map(mapper::toResponseDto);
+    }
+
+    @Override
+    public Page<FarmResponseDto> findAllWithSpecification(Pageable pageRequest, FarmSearchRequest request) {
+        Specification<Farm> specification = Specification.where(hasName(request.name()))
+                .and(hasLocation(request.location()))
+                .and(hasAreaBetween(request.minArea(), request.maxArea()));
+
+        return repository.findAll(specification, pageRequest)
                 .map(mapper::toResponseDto);
     }
 
