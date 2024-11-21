@@ -5,7 +5,6 @@ import com.wora.citronix.harvest.application.dto.response.HarvestResponseDto;
 import com.wora.citronix.harvest.application.service.HarvestService;
 import com.wora.citronix.harvest.domain.vo.HarvestId;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

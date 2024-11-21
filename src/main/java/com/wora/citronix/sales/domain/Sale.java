@@ -31,6 +31,13 @@ public class Sale {
     @OneToOne
     private Harvest harvest;
 
+    public Sale(Long id, LocalDate date, Double unitPrice, Harvest harvest) {
+        this.id = new SaleId(id);
+        this.date = date;
+        this.unitPrice = unitPrice;
+        this.harvest = harvest;
+    }
+
     public Double getIncome(){
         return calculateIncome();
     }

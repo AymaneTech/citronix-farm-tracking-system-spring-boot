@@ -5,5 +5,4 @@ import com.wora.citronix.sales.application.dto.SaleResponseDto;
 
 public interface SaleService {
     SaleResponseDto buyHarvest(SaleRequestDto dto);
-
 }
