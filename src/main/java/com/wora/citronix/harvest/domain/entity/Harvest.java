@@ -2,6 +2,7 @@ package com.wora.citronix.harvest.domain.entity;
 
 import com.wora.citronix.harvest.domain.vo.HarvestId;
 import com.wora.citronix.harvest.domain.vo.Season;
+import com.wora.citronix.sales.domain.Sale;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,9 @@ public class Harvest {
 
     @OneToMany(mappedBy = "harvest", fetch = FetchType.EAGER)
     private List<HarvestDetail> harvestDetails;
+
+    @OneToOne(mappedBy = "harvest")
+    private Sale sale;
 
     public Harvest(LocalDate date, Season season) {
         this.date = date;
