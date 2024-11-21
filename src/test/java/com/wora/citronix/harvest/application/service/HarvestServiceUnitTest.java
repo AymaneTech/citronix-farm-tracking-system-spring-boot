@@ -51,7 +51,7 @@ class HarvestServiceUnitTest {
         void givenHarvestsExists_whenFindAll_thenSuccess() {
             given(repository.findAll(any(PageRequest.class)))
                     .willReturn(new PageImpl<>(List.of(harvest)));
-            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null, null));
+            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null, null, null));
 
             Page<HarvestResponseDto> actual = underTest.findAll(0, 10);
             assertThat(actual).isNotNull();
@@ -84,7 +84,7 @@ class HarvestServiceUnitTest {
         void givenExistentId_whenFindById_thenSuccess() {
             HarvestId harvestId = new HarvestId(2L);
             given(repository.findById(harvestId)).willReturn(Optional.of(harvest));
-            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null, null));
+            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null, null, null));
 
             HarvestResponseDto actual = underTest.findById(harvestId);
 
@@ -112,7 +112,7 @@ class HarvestServiceUnitTest {
             Season season = Season.fromDate(harvest.getDate());
             given(repository.existsBySeason(season)).willReturn(false);
             given(repository.save(any(Harvest.class))).willReturn(harvest);
-            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null, null));
+            given(mapper.toResponseDto(harvest)).willReturn(new HarvestResponseDto(harvest.getId().value(), harvest.getDate(), harvest.getSeason(), null, null, null));
 
             HarvestResponseDto actual = underTest.create(request);
 
