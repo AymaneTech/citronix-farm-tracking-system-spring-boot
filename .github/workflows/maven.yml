@@ -22,7 +22,7 @@ on:
       - 'Dockerfile'
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -40,33 +40,40 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Run mvn install
-        run: mvn install -DskipTests
-
-      - name: Build docker image
-        run: docker build -t waiting-room-management-api:latest .
-
-      - name: Run docker compose
+      - name: Run docker compose (build and start containers)
         run: docker compose up --build -d
-        env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/test_db
-          SPRING_DATASOURCE_USERNAME: pguser
-          SPRING_DATASOURCE_PASSWORD: password
 
       - name: Wait for database to be ready
         run: |
           timeout 30s bash -c 'until pg_isready -h localhost -p 5433; do sleep 1; done'
 
-      - name: Run unit/integration test
+      - name: Run Tests
         run: mvn verify
+
+      - name: Generate JaCoCo Report
+        run: mvn jacoco:report
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/test_db
           SPRING_DATASOURCE_USERNAME: pguser
           SPRING_DATASOURCE_PASSWORD: password
 
-      - name: Shut down docker
-        run: docker compose down
+      - name: Upload Coverage Report
+        id: jacoco
+        uses: madrapps/jacoco-report
+        with:
+          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          in-coverage-overall: 40
+          min-coverage-changed-files: 60
 
+      - name: Shut down docker
+        if: always()
+        run: docker compose down
+  build-and-push:
+    name: Build and Push Docker Image
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:

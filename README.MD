@@ -4,8 +4,10 @@ A comprehensive farm management application built for lemon orchards, enabling f
 
 ![Project Status](https://img.shields.io/badge/Status-Done-success)
 ![Java](https://img.shields.io/badge/Java-21-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-green)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.5-green)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
+![Coverage](https://img.shields.io/badge/Coverage-XX%25-brightgreen)
+
 
 ## 📑 Table of Contents
 - [Overview](#overview)
@@ -23,19 +25,22 @@ Citronix is a farm management application designed to help lemon farmers track t
 
 ## Architecture
 
-The project follows a layered architecture inspired by Domain-Driven Design (DDD), ensuring clear separation of concerns and modularity.
+The project follows Domain-Driven Design (DDD) Principles, ensuring clear separation of concerns and modularity.
 
 ### Bounded Contexts:
-- **Farm Management (Core Domain)**: Farm, fields, trees, harvests, and sales management.
-- **Reporting and Analytics (Supporting Domain)**: Revenue and performance tracking.
+- **Farm Management (Core Domain)**: Farm, fields management.
+- **Tree Management**: Tree lifecycle management.
+- **Harvest Management**: Harvest and Details management.
+- **Sales Management**: sales management.
 
 ## Tech Stack
 
 ### Core Technologies:
 - **Java 21**
-- **Spring Boot 3.2.0**
+- **Spring Boot 3.3.5**
 - **PostgreSQL 16**
 - **Docker & Docker Compose**
+- **Github actions for CI/CD pipelines**
 
 ### Development Tools & Practices:
 - **Test-Driven Development (TDD)**
@@ -65,8 +70,8 @@ The project follows a layered architecture inspired by Domain-Driven Design (DDD
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/citronix.git
-cd citronix
+git clone https://github.com/AymaneTech/citronix-farm-tracking-system-spring-boot.git
+cd citronix-farm-tracking-system-spring-boot 
 ```
 
 2. Build and start the application using Docker Compose:
@@ -74,12 +79,20 @@ cd citronix
 make up
 ```
 
-This will start the application and the PostgreSQL database in Docker containers. You can now access the application at `http://localhost:8080`.
+This will start the application and the PostgreSQL database in Docker containers. You can now access the application at `http://localhost:8081`.
 
-3. To stop the application and clean up the Docker containers:
+3. To run unit/integration testing
+```bash
+make test 
+```
+This will run unit/integration tests and you can access to jacoco code coverage report 
+
+
+4. To stop the application and clean up the Docker containers:
 ```bash
 make down
 ```
+
 
 This will stop the application and remove the containers.
 
@@ -160,8 +173,7 @@ Request:
 {
     "name": "Citron Farm",
     "location": "Region A",
-    "area": 500,
-    "createdAt": "2024-01-01"
+    "area": 500
 }
 
 Response:
@@ -195,7 +207,7 @@ The project follows TDD practices. To run the tests:
 ## API Documentation
 
 Once the application is running, you can access the Swagger UI:
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- Swagger UI: `http://localhost:8081/swagger-ui.html`
 
 ## Conclusion
 
