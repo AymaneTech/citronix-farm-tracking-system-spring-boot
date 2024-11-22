@@ -6,6 +6,7 @@ A comprehensive farm management application built for lemon orchards, enabling f
 ![Java](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.5-green)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
+![Coverage](https://img.shields.io/badge/Coverage-XX%25-brightgreen)
 
 
 ## 📑 Table of Contents
