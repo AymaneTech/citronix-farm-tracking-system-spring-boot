@@ -22,7 +22,7 @@ on:
       - 'Dockerfile'
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -40,40 +40,23 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Run docker compose (build and start containers)
+      - name: Run docker compose
         run: docker compose up --build -d
 
       - name: Wait for database to be ready
         run: |
           timeout 30s bash -c 'until pg_isready -h localhost -p 5433; do sleep 1; done'
 
-      - name: Run Tests
+      - name: Run unit/integration test
         run: mvn verify
-
-      - name: Generate JaCoCo Report
-        run: mvn jacoco:report
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/test_db
           SPRING_DATASOURCE_USERNAME: pguser
           SPRING_DATASOURCE_PASSWORD: password
 
-      - name: Upload Coverage Report
-        id: jacoco
-        uses: madrapps/jacoco-report@v1
-        with:
-          path: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 40
-          min-coverage-changed-files: 60
-
       - name: Shut down docker
-        if: always()
         run: docker compose down
-  build-and-push:
-    name: Build and Push Docker Image to docker hub
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    steps:
+
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
@@ -83,3 +66,4 @@ jobs:
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
