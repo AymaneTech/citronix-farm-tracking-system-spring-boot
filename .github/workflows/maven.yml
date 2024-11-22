@@ -70,7 +70,7 @@ jobs:
         if: always()
         run: docker compose down
   build-and-push:
-    name: Build and Push Docker Image
+    name: Build and Push Docker Image to docker hub
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
