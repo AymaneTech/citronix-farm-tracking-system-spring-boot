@@ -129,9 +129,13 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.reporting.outputDirectory}/jacoco-report</outputDirectory>
+                            <excludes>
+                                <exclude>com/wora/citronix/harvest/application/mapper/**</exclude>
+                                <exclude>com/wora/citronix/farm/application/mapper/**</exclude>
+                                <exclude>com/wora/citronix/tree/application/mapper/**</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>default-check</id>
                         <goals>
