@@ -2,9 +2,9 @@ spring:
   application:
     name: citronix
   datasource:
-    url: jdbc:postgresql://localhost:5433/prod_db
-    username: pguser
-    password: password
+    url: jdbc:postgresql://localhost:5432/citronix_prod_db
+    username: postgres
+    password: admin
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
